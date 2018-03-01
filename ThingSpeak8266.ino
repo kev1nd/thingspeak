@@ -6,7 +6,7 @@
 //char pass[15] = "XXXXXXXX"; // Wifi Password
 //char apikey[] = "XXXXXXXX"; // Thingspeak write key
 
-ThingSpeak thingspeak;
+ThingSpeak8266 thingspeak;
 float mydata = 0.0;
 
 void setup() {
