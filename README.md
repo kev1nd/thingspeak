@@ -2,6 +2,9 @@
 
 Sends AT commands from an Arduino to an ESP8266 in order to transmit data to Thing Speak.
 
+## Version control
+Version 1.0.0 is the initial release
+
 ## Setting up.
 The Arduino sketch is just for testing. To make the test run, you should create a file called "settings.h" in the same directory as your sketch.
 

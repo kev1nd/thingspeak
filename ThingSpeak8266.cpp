@@ -1,4 +1,4 @@
-#include "thingspeak.h"
+#include "ThingSpeak8266.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -10,7 +10,7 @@ SoftwareSerial Serial1(6, 7); // RX, TX
 #endif
 
 
-void ThingSpeak::init(char * key)
+void ThingSpeak8266::init(char * key)
 {
   strcpy(fielddata, "");
   strcpy(apikey, key);
@@ -18,45 +18,45 @@ void ThingSpeak::init(char * key)
   Serial1.begin(9600);
 }
 
-void ThingSpeak::ConnectWifi(char *ssid, char *password) {
+void ThingSpeak8266::ConnectWifi(char *ssid, char *password) {
   Serial.print("Connecting to: ");
   Serial.println(ssid);
-  ThingSpeak::sendCmd("AT+CWMODE=1", "OK");
+  ThingSpeak8266::sendCmd("AT+CWMODE=1", "OK");
   delay(1500);
 
-  if (ThingSpeak::sendCmd("AT+CWJAP?", ssid)) {
+  if (ThingSpeak8266::sendCmd("AT+CWJAP?", ssid)) {
     Serial.println("Already connected to wifi");
   } else {
     char myCommand[200];
     sprintf(myCommand, "AT+CWJAP=\"%s\",\"%s\"", ssid, password);
-    if (ThingSpeak::sendCmd(myCommand, "WIFI GOT IP")) {
+    if (ThingSpeak8266::sendCmd(myCommand, "WIFI GOT IP")) {
       Serial.println("Connected to Wifi");
     } else {
       Serial.println("Failed to connect to Wifi");
     }
   }
   delay(1500);
-  if (ThingSpeak::sendCmd("AT+CIFSR", "CIFSR:STAIP")) {
+  if (ThingSpeak8266::sendCmd("AT+CIFSR", "CIFSR:STAIP")) {
     Serial.println("IP addressed achieved");
   } else {
     Serial.println("No IP address");
   }  
 
   //Allow multiple connections
-  ThingSpeak::sendCmd("AT+CIPMUX=1", "OK");
+  ThingSpeak8266::sendCmd("AT+CIPMUX=1", "OK");
 
   delay(5000);
 }
 
-void ThingSpeak::Data(int ref, char *content) {
+void ThingSpeak8266::Data(int ref, char *content) {
   sprintf(fielddata, "%s&field%i=%s", fielddata, ref, content);
 }
 
-int ThingSpeak::Status() {
+int ThingSpeak8266::Status() {
   return status;
 }
 
-void ThingSpeak::Send() {
+void ThingSpeak8266::Send() {
   char myCommand[200];
   sprintf(myCommand, "GET http://api.thingspeak.com/update?api_key=%s%s", apikey, fielddata);
 
@@ -64,15 +64,15 @@ void ThingSpeak::Send() {
   char prepstr[20];
   sprintf(prepstr, "AT+CIPSEND=4,%i", len);
 
-  ThingSpeak::sendCmd("AT+CIPSTART=4,\"TCP\",\"52.5.13.84\",80", "CONNECT");
-  ThingSpeak::sendCmd(prepstr, "");
-  ThingSpeak::sendCmd(myCommand, "42");
+  ThingSpeak8266::sendCmd("AT+CIPSTART=4,\"TCP\",\"52.5.13.84\",80", "CONNECT");
+  ThingSpeak8266::sendCmd(prepstr, "");
+  ThingSpeak8266::sendCmd(myCommand, "42");
   strcpy(fielddata, "");
 }
 
 
 
-bool ThingSpeak::sendCmd(char *msg, char *expected) {
+bool ThingSpeak8266::sendCmd(char *msg, char *expected) {
   char outp[80] = "";
   char rsp[80];
   bool foundit = (strlen(expected) == 0);

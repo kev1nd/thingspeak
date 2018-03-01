@@ -1,4 +1,4 @@
-#include "thingspeak.h"
+#include "ThingSpeak8266.h"
 
 #include "settings.h"
 // Defined in "settings.h" ...
