@@ -1,4 +1,4 @@
-# Think Speak Library for Arduino / ESP8266
+# Thing Speak Library for Arduino / ESP8266
 
 Sends AT commands from an Arduino to an ESP8266 in order to transmit data to Thing Speak.
 
